@@ -78,7 +78,7 @@ This website will allow the user to store and manage recipes and their associate
 * Example Input: "Pot Pie"
 * Example Output: "Pot Pie", `database-assigned id`
 
-**The Update method for the Recipe class will return the Recipe with the new recipe name or date of enrollment.**
+**The Update method for the Recipe class will return the Recipe with the new recipe name and instructions.**
 * Example Input: "Pot Pie", id is 1, instructions: "Microwave the package"
 * Example Output: "Pot Pie", id is 1, instructions: "Microwave the package"
 

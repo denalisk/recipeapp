@@ -27,11 +27,7 @@ namespace RecipeApp
 
     public static void DeleteAll()
     {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM categories;", conn);
-      cmd.ExecuteNonQuery();
-      conn.Close();
+      DB.DeleteAll("categories");
     }
 
     public static List<Category> GetAll()
@@ -51,14 +47,7 @@ namespace RecipeApp
         allCategories.Add(newCategory);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return allCategories;
     }
@@ -92,14 +81,7 @@ namespace RecipeApp
         this._id = rdr.GetInt32(0);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
     }
 
     public static Category Find(int id)
@@ -122,14 +104,7 @@ namespace RecipeApp
 
       Category foundCategory = new Category(categoryName, categoryId);
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return foundCategory;
     }
@@ -152,14 +127,7 @@ namespace RecipeApp
         foundCategories.Add(foundCategory);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return foundCategories;
     }
@@ -173,10 +141,7 @@ namespace RecipeApp
       cmd.Parameters.Add(new SqlParameter("@CategoryId", this.GetId().ToString()));
       cmd.ExecuteNonQuery();
 
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn);
     }
 
     public List<Recipe> GetRecipesByCategory()
@@ -198,14 +163,7 @@ namespace RecipeApp
         allRecipes.Add(newRecipe);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return allRecipes;
     }

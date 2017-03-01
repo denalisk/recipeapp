@@ -34,11 +34,7 @@ namespace RecipeApp
 
     public static void DeleteAll()
     {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM ingredients;", conn);
-      cmd.ExecuteNonQuery();
-      conn.Close();
+      DB.DeleteAll("ingredients");
     }
 
     public static List<Ingredient> GetAll()
@@ -58,14 +54,7 @@ namespace RecipeApp
         allIngredients.Add(newIngredient);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return allIngredients;
     }
@@ -100,15 +89,22 @@ namespace RecipeApp
         this._id = rdr.GetInt32(0);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
     }
+
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM ingredients WHERE id = @TargetId; DELETE FROM recipes_ingredients WHERE ingredient_id = @TargetId; DELETE FROM ingredients_categories WHERE ingredient_id = @TargetId;", conn);
+      cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
+
+      cmd.ExecuteNonQuery();
+
+      DB.CloseSqlConnection(conn);
+    }
+
 
     public static Ingredient Find(int id)
     {
@@ -130,14 +126,7 @@ namespace RecipeApp
 
       Ingredient foundIngredient = new Ingredient(ingredientName, ingredientId);
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return foundIngredient;
     }
@@ -160,14 +149,7 @@ namespace RecipeApp
         foundIngredients.Add(foundIngredient);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return foundIngredients;
     }
@@ -181,10 +163,42 @@ namespace RecipeApp
       cmd.Parameters.Add(new SqlParameter("@IngredientId", this.GetId().ToString()));
       cmd.ExecuteNonQuery();
 
-      if (conn != null)
+      DB.CloseSqlConnection(conn);
+    }
+
+    public void AddCategory(Category newCategory)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("INSERT INTO ingredients_categories (ingredient_id, category_id) VALUES (@IngredientId, @CategoryId);", conn);
+      cmd.Parameters.Add(new SqlParameter("@IngredientId", this.GetId().ToString()));
+      cmd.Parameters.Add(new SqlParameter("@CategoryId", newCategory.GetId().ToString()));
+      cmd.ExecuteNonQuery();
+
+      DB.CloseSqlConnection(conn);
+    }
+
+    public List<Category> GetCategory()
+    {
+      List<Category> allCategories = new List<Category>{};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT categories.* FROM ingredients JOIN ingredients_categories ON (ingredients.id = ingredients_categories.ingredient_id) JOIN categories ON (categories.id = ingredients_categories.category_id) WHERE ingredients.id = @IngredientId;", conn);
+      cmd.Parameters.Add(new SqlParameter("@IngredientId", this.GetId().ToString()));
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while (rdr.Read())
       {
-        conn.Close();
+        int Id = rdr.GetInt32(0);
+        string categoryName = rdr.GetString(1);
+        Category newCategory = new Category(categoryName, Id);
+        allCategories.Add(newCategory);
       }
+
+      DB.CloseSqlConnection(conn, rdr);
+
+      return allCategories;
     }
 
     public List<Recipe> GetRecipesByIngredient()
@@ -206,14 +220,7 @@ namespace RecipeApp
         allRecipes.Add(newRecipe);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return allRecipes;
     }

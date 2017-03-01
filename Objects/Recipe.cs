@@ -34,11 +34,7 @@ namespace RecipeApp
 
     public static void DeleteAll()
     {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM recipes;", conn);
-      cmd.ExecuteNonQuery();
-      conn.Close();
+      DB.DeleteAll("recipes");
     }
 
     public static List<Recipe> GetAll()
@@ -59,14 +55,7 @@ namespace RecipeApp
         allRecipes.Add(newRecipe);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return allRecipes;
     }
@@ -102,14 +91,20 @@ namespace RecipeApp
         this._id = rdr.GetInt32(0);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
+    }
+
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM recipes WHERE id = @TargetId; DELETE FROM recipes_categories WHERE recipe_id = @TargetId; DELETE FROM recipes_ingredients WHERE recipe_id = @TargetId;", conn);
+      cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
+
+      cmd.ExecuteNonQuery();
+
+      DB.CloseSqlConnection(conn);
     }
 
     public static Recipe Find(int id)
@@ -134,14 +129,7 @@ namespace RecipeApp
 
       Recipe foundRecipe = new Recipe(recipeName, recipeInstruction, recipeId);
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return foundRecipe;
     }
@@ -165,14 +153,7 @@ namespace RecipeApp
         foundRecipes.Add(foundRecipe);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return foundRecipes;
     }
@@ -186,10 +167,7 @@ namespace RecipeApp
       cmd.Parameters.Add(new SqlParameter("@CategoryId", newCategory.GetId().ToString()));
       cmd.ExecuteNonQuery();
 
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn);
     }
 
 
@@ -211,14 +189,7 @@ namespace RecipeApp
         allCategories.Add(newCategory);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return allCategories;
     }
@@ -233,10 +204,7 @@ namespace RecipeApp
       cmd.Parameters.Add(new SqlParameter("@Amount", amount));
       cmd.ExecuteNonQuery();
 
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn);
     }
 
 
@@ -259,14 +227,7 @@ namespace RecipeApp
         allIngredients.Add(newIngredient);
       }
 
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
+      DB.CloseSqlConnection(conn, rdr);
 
       return allIngredients;
     }

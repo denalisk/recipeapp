@@ -136,5 +136,22 @@ namespace RecipeApp
       Assert.Equal(verify, output);
     }
 
+    [Fact]
+    public void AddCategory_OneIngredient_CategoryAddedToJoinTable()
+    {
+      //Arrange
+      Ingredient testIngredient = new Ingredient ("Pepper");
+      testIngredient.Save();
+      Category testCategory = new Category("Spices");
+      testCategory.Save();
+      testIngredient.AddCategory(testCategory);
+
+      //Act
+      List<Category> output = testIngredient.GetCategory();
+      List<Category> verify = new List<Category> {testCategory};
+
+      //Assert
+      Assert.Equal(verify, output);
+    }
   }
 }

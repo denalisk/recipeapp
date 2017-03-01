@@ -157,5 +157,43 @@ namespace RecipeApp
       Assert.Equal(verify, output);
     }
 
+    [Fact]
+    public void Recipe_Delete_RemoveObjectFromDatabase()
+    {
+      Recipe testRecipe = new Recipe ("Pot Pie", "Microwave it");
+      testRecipe.Save();
+
+      testRecipe.Delete();
+
+      Assert.Equal(0, Recipe.GetAll().Count);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 }
