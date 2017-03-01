@@ -136,5 +136,26 @@ namespace RecipeApp
       Assert.Equal(verify, output);
     }
 
+    [Fact]
+    public void AddIngredient_OneRecipe_IngredientAddedToJoinTable()
+    {
+      //Arrange
+      Recipe testRecipe = new Recipe ("Pot Pie", "Microwave it");
+      testRecipe.Save();
+      Ingredient testIngredient = new Ingredient("Pepper");
+      testIngredient.Save();
+      testRecipe.AddIngredient(testIngredient, "1 dash ");
+
+      //Act
+      List<Ingredient> outputList = testRecipe.GetIngredient();
+      List<Ingredient> verifyList = new List<Ingredient>{testIngredient};
+
+      string output = outputList[0].GetAmount() + outputList[0].GetName() ;
+      string verify = "1 dash Pepper";
+
+      //Assert
+      Assert.Equal(verify, output);
+    }
+
   }
 }

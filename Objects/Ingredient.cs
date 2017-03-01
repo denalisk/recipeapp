@@ -8,11 +8,13 @@ namespace RecipeApp
   {
     private int _id;
     private string _name;
+    private string _amount;
 
-    public Ingredient(string ingredientName, int ingredientId = 0)
+    public Ingredient(string ingredientName, int ingredientId = 0, string ingredientAmount = null)
     {
       _id = ingredientId;
       _name = ingredientName;
+      _amount = ingredientAmount;
     }
 
     public int GetId()
@@ -23,6 +25,11 @@ namespace RecipeApp
     public string GetName()
     {
       return _name;
+    }
+
+    public string GetAmount()
+    {
+      return _amount;
     }
 
     public static void DeleteAll()
@@ -74,7 +81,8 @@ namespace RecipeApp
         Ingredient newIngredient = (Ingredient) randomIngredient;
         bool idEquality = (this.GetId() == newIngredient.GetId());
         bool nameEquality = (this.GetName() == newIngredient.GetName());
-        return (idEquality && nameEquality);
+        bool amountEquality = (this.GetAmount() == newIngredient.GetAmount());
+        return (idEquality && nameEquality && amountEquality);
       }
     }
 

@@ -222,5 +222,53 @@ namespace RecipeApp
 
       return allCategories;
     }
+
+    public void AddIngredient(Ingredient newIngredient, string amount)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("INSERT INTO recipes_ingredients (recipe_id, ingredient_id, amount) VALUES (@RecipeId, @IngredientId,@Amount);", conn);
+      cmd.Parameters.Add(new SqlParameter("@RecipeId", this.GetId().ToString()));
+      cmd.Parameters.Add(new SqlParameter("@IngredientId", newIngredient.GetId().ToString()));
+      cmd.Parameters.Add(new SqlParameter("@Amount", amount));
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+
+    public List<Ingredient> GetIngredient()
+    {
+      List<Ingredient> allIngredients = new List<Ingredient>{};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT ingredients.*, recipes_ingredients.amount FROM recipes JOIN recipes_ingredients ON (recipes.id = recipes_ingredients.recipe_id) JOIN ingredients ON (ingredients.id = recipes_ingredients.ingredient_id) WHERE recipes.id = @RecipeId;", conn);
+      cmd.Parameters.Add(new SqlParameter("@RecipeId", this.GetId().ToString()));
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while (rdr.Read())
+      {
+        int Id = rdr.GetInt32(0);
+        string ingredientName = rdr.GetString(1);
+        string ingredientAmount = rdr.GetString(2);
+        Ingredient newIngredient = new Ingredient(ingredientName, Id, ingredientAmount);
+        allIngredients.Add(newIngredient);
+      }
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return allIngredients;
+    }
   }
 }
