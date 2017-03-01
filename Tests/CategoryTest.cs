@@ -159,6 +159,40 @@ namespace RecipeApp
       Assert.Equal(expectedCategory, Category.Find(testCategory.GetId()));
     }
 
+    [Fact]
+    public void Category_GetRecipesByCategory_ReturnListOfRecipes()
+    {
+      //Arrange
+      Recipe testRecipe = new Recipe ("Pot Pie", "Microwave it");
+      testRecipe.Save();
+
+      Category testCategory = new Category ("Peasant");
+      testCategory.Save();
+
+      //Act
+      testRecipe.AddCategory(testCategory);
+
+      //Assert
+      Assert.Equal(testRecipe, testCategory.GetRecipesByCategory()[0]);
+    }
+
+    [Fact]
+    public void Category_GetIngredientsByCategory_ReturnListOfIngredients()
+    {
+      //Arrange
+      Ingredient testIngredient = new Ingredient ("Chicken");
+      testIngredient.Save();
+
+      Category testCategory = new Category ("Peasant");
+      testCategory.Save();
+
+      //Act
+      testIngredient.AddCategory(testCategory);
+
+      //Assert
+      Assert.Equal(testIngredient, testCategory.GetIngredientsByCategory()[0]);
+    }
+
 
 
 

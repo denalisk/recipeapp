@@ -66,7 +66,7 @@ namespace RecipeApp
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM recipes;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM recipes ORDER BY rating DESC;", conn);
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())

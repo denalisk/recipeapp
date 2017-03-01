@@ -195,5 +195,38 @@ namespace RecipeApp
       DB.CloseSqlConnection(conn, rdr);
       return allRecipes;
     }
+
+    public List<Ingredient> GetIngredientsByCategory()
+    {
+      List<Ingredient> allIngredients = new List<Ingredient>{};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT ingredients.* FROM categories JOIN ingredients_categories ON (categories.id = ingredients_categories.category_id) JOIN ingredients ON (ingredients.id = ingredients_categories.ingredient_id) WHERE categories.id = @CategoryId;", conn);
+      cmd.Parameters.Add(new SqlParameter("@CategoryId", this.GetId().ToString()));
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int ingredientId = rdr.GetInt32(0);
+        string ingredientName = rdr.GetString(1);
+        Ingredient newIngredient = new Ingredient(ingredientName, ingredientId);
+        allIngredients.Add(newIngredient);
+      }
+
+
+      DB.CloseSqlConnection(conn, rdr);
+      return allIngredients;
+    }
+
+
+
+
+
+
+
+
+
+
   }
 }
