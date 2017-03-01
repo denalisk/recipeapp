@@ -48,7 +48,6 @@ namespace RecipeApp
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return allCategories;
     }
 
@@ -84,6 +83,19 @@ namespace RecipeApp
       DB.CloseSqlConnection(conn, rdr);
     }
 
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM categories WHERE id = @TargetId; DELETE FROM recipes_categories WHERE category_id = @TargetId; DELETE FROM ingredients_categories WHERE category_id = @TargetId;", conn);
+      cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
+
+      cmd.ExecuteNonQuery();
+      DB.CloseSqlConnection(conn);
+    }
+
+
     public static Category Find(int id)
     {
       SqlConnection conn = DB.Connection();
@@ -105,7 +117,6 @@ namespace RecipeApp
       Category foundCategory = new Category(categoryName, categoryId);
 
       DB.CloseSqlConnection(conn, rdr);
-
       return foundCategory;
     }
 
@@ -128,7 +139,6 @@ namespace RecipeApp
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return foundCategories;
     }
 
@@ -164,7 +174,6 @@ namespace RecipeApp
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return allRecipes;
     }
   }

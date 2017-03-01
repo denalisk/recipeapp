@@ -103,7 +103,6 @@ namespace RecipeApp
       cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
 
       cmd.ExecuteNonQuery();
-
       DB.CloseSqlConnection(conn);
     }
 
@@ -154,7 +153,6 @@ namespace RecipeApp
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return foundRecipes;
     }
 
@@ -190,7 +188,6 @@ namespace RecipeApp
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return allCategories;
     }
 
@@ -228,7 +225,6 @@ namespace RecipeApp
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return allIngredients;
     }
   }

@@ -55,7 +55,6 @@ namespace RecipeApp
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return allIngredients;
     }
 
@@ -101,7 +100,6 @@ namespace RecipeApp
       cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
 
       cmd.ExecuteNonQuery();
-
       DB.CloseSqlConnection(conn);
     }
 
@@ -127,7 +125,6 @@ namespace RecipeApp
       Ingredient foundIngredient = new Ingredient(ingredientName, ingredientId);
 
       DB.CloseSqlConnection(conn, rdr);
-
       return foundIngredient;
     }
 
@@ -150,7 +147,6 @@ namespace RecipeApp
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return foundIngredients;
     }
 
@@ -174,7 +170,6 @@ namespace RecipeApp
       cmd.Parameters.Add(new SqlParameter("@IngredientId", this.GetId().ToString()));
       cmd.Parameters.Add(new SqlParameter("@CategoryId", newCategory.GetId().ToString()));
       cmd.ExecuteNonQuery();
-
       DB.CloseSqlConnection(conn);
     }
 
@@ -197,7 +192,6 @@ namespace RecipeApp
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return allCategories;
     }
 
@@ -221,7 +215,6 @@ namespace RecipeApp
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return allRecipes;
     }
   }
