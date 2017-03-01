@@ -208,9 +208,10 @@ namespace RecipeApp
       while (rdr.Read())
       {
         int newId = rdr.GetInt32(0);
-        string recipeName = rdr.GetString(1);
-        string recipeInstructions = rdr.GetString(2);
-        Recipe newRecipe = new Recipe(recipeName, recipeInstructions, newId);
+        string newName = rdr.GetString(1);
+        string newInstruction = rdr.GetString(2);
+        int newRating = rdr.GetInt32(3);
+        Recipe newRecipe = new Recipe(newName, newInstruction, newRating, newId);
         allRecipes.Add(newRecipe);
       }
 

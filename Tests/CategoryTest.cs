@@ -136,5 +136,16 @@ namespace RecipeApp
       Assert.Equal(verify, output);
     }
 
+    [Fact]
+    public void Category_Delete_RemoveObjectFromDatabase()
+    {
+      Category testCategory = new Category ("Peasant");
+      testCategory.Save();
+
+      testCategory.Delete();
+
+      Assert.Equal(0, Category.GetAll().Count);
+    }
+
   }
 }

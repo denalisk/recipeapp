@@ -9,12 +9,14 @@ namespace RecipeApp
     private int _id;
     private string _name;
     private string _instruction;
+    private int _rating;
 
-    public Recipe(string recipeName, string instruction, int recipeId = 0)
+    public Recipe(string recipeName, string instruction, int rating = 0, int recipeId = 0)
     {
       _id = recipeId;
       _name = recipeName;
       _instruction = instruction;
+      _rating = rating;
     }
 
     public int GetId()
@@ -37,6 +39,11 @@ namespace RecipeApp
       DB.DeleteAll("recipes");
     }
 
+    public int GetRating()
+    {
+      return _rating;
+    }
+
     public static List<Recipe> GetAll()
     {
       List<Recipe> allRecipes = new List<Recipe>{};
@@ -51,12 +58,12 @@ namespace RecipeApp
         int recipeId = rdr.GetInt32(0);
         string recipeName = rdr.GetString(1);
         string instruction = rdr.GetString(2);
-        Recipe newRecipe = new Recipe(recipeName, instruction, recipeId);
+        int recipeRating = rdr.GetInt32(3);
+        Recipe newRecipe = new Recipe(recipeName, instruction, recipeRating, recipeId);
         allRecipes.Add(newRecipe);
       }
 
       DB.CloseSqlConnection(conn, rdr);
-
       return allRecipes;
     }
 
@@ -72,7 +79,8 @@ namespace RecipeApp
         bool idEquality = (this.GetId() == newRecipe.GetId());
         bool nameEquality = (this.GetName() == newRecipe.GetName());
         bool instructionEquality = (this.GetInstruction() == newRecipe.GetInstruction());
-        return (idEquality && nameEquality && instructionEquality);
+        bool ratingEquality = (this.GetRating() == newRecipe.GetRating());
+        return (idEquality && nameEquality && instructionEquality && ratingEquality);
       }
     }
 
@@ -81,9 +89,10 @@ namespace RecipeApp
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO recipes (name, instruction) OUTPUT INSERTED.id VALUES (@RecipeName, @Instruction) ;", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO recipes (name, instruction, rating) OUTPUT INSERTED.id VALUES (@RecipeName, @Instruction, @Rating) ;", conn);
       cmd.Parameters.Add(new SqlParameter("@RecipeName", this.GetName()));
       cmd.Parameters.Add(new SqlParameter("@Instruction", this.GetInstruction()));
+      cmd.Parameters.Add(new SqlParameter("@Rating", this.GetRating()));
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -118,16 +127,17 @@ namespace RecipeApp
       int recipeId = 0;
       string recipeName = null;
       string recipeInstruction = null;
+      int recipeRating = 0;
 
       while (rdr.Read())
       {
         recipeId = rdr.GetInt32(0);
         recipeName = rdr.GetString(1);
         recipeInstruction = rdr.GetString(2);
+        recipeRating = rdr.GetInt32(3);
       }
 
-      Recipe foundRecipe = new Recipe(recipeName, recipeInstruction, recipeId);
-
+      Recipe foundRecipe = new Recipe(recipeName, recipeInstruction, recipeRating, recipeId);
       DB.CloseSqlConnection(conn, rdr);
 
       return foundRecipe;
@@ -148,7 +158,8 @@ namespace RecipeApp
         int recipeId = rdr.GetInt32(0);
         string newName = rdr.GetString(1);
         string recipeInstruction = rdr.GetString(2);
-        Recipe foundRecipe = new Recipe(newName, recipeInstruction, recipeId);
+        int recipeRating = rdr.GetInt32(3);
+        Recipe foundRecipe = new Recipe(recipeName, recipeInstruction, recipeRating, recipeId);
         foundRecipes.Add(foundRecipe);
       }
 
