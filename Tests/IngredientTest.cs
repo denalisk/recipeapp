@@ -164,5 +164,28 @@ namespace RecipeApp
 
       Assert.Equal(0, Category.GetAll().Count);
     }
+
+    [Fact]
+    public void Ingredient_Update_UpdateDatabaseAndLocalObject()
+    {
+      Ingredient testIngredient = new Ingredient ("Pepper");
+      testIngredient.Save();
+
+      testIngredient.Update("Ketchup");
+      Ingredient expectedIngredient = new Ingredient("Ketchup", testIngredient.GetId());
+
+      Assert.Equal(expectedIngredient, Ingredient.Find(testIngredient.GetId()));
+    }
+
+
+
+
+
+
+
+
+
+
+
   }
 }

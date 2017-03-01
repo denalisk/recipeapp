@@ -147,5 +147,54 @@ namespace RecipeApp
       Assert.Equal(0, Category.GetAll().Count);
     }
 
+    [Fact]
+    public void Category_Update_UpdateDatabaseAndLocalObject()
+    {
+      Category testCategory = new Category ("Peasant");
+      testCategory.Save();
+
+      testCategory.Update("Ultra Poor");
+      Category expectedCategory = new Category("Ultra Poor", testCategory.GetId());
+
+      Assert.Equal(expectedCategory, Category.Find(testCategory.GetId()));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 }

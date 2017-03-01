@@ -168,17 +168,36 @@ namespace RecipeApp
       Assert.Equal(0, Recipe.GetAll().Count);
     }
 
+    [Fact]
+    public void Recipe_Update_UpdateDatabaseAndLocalObject()
+    {
+      Recipe testRecipe = new Recipe ("Pot Pie", "Microwave it");
+      testRecipe.Save();
 
+      testRecipe.Update("Chicken Pot Pie", "Boil it", 4);
+      Recipe expectedRecipe = new Recipe("Chicken Pot Pie", "Boil it", 4, testRecipe.GetId());
 
+      Assert.Equal(expectedRecipe, Recipe.Find(testRecipe.GetId()));
+    }
 
+    [Fact]
+    public void Recipe_UpdateAmount_UpdateJoinTabaleAndLocalObject()
+    {
+      Recipe testRecipe = new Recipe ("Pot Pie", "Microwave it");
+      testRecipe.Save();
+      Ingredient testIngredient = new Ingredient("Pepper");
+      testIngredient.Save();
+      testRecipe.AddIngredient(testIngredient, "1 dash ");
 
+      testRecipe.UpdateAmount(testIngredient, "1 pound ");
+      List<Ingredient> outputList = testRecipe.GetIngredient();
+      List<Ingredient> verifyList = new List<Ingredient>{testIngredient};
 
+      string output = outputList[0].GetAmount() + outputList[0].GetName() ;
+      string verify = "1 pound Pepper";
 
-
-
-
-
-
+      Assert.Equal(verify, output);
+    }
 
 
 

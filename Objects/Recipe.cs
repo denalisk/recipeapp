@@ -23,25 +23,41 @@ namespace RecipeApp
     {
       return _id;
     }
+    public void SetId(int newId)
+    {
+      _id = newId;
+    }
 
     public string GetName()
     {
       return _name;
+    }
+    public void SetName(string newName)
+    {
+      _name = newName;
     }
 
     public string GetInstruction()
     {
       return _instruction;
     }
-
-    public static void DeleteAll()
+    public void SetInstruction(string newInstruction)
     {
-      DB.DeleteAll("recipes");
+      _instruction = newInstruction;
     }
 
     public int GetRating()
     {
       return _rating;
+    }
+    public void SetRating(int newRating)
+    {
+      _rating = newRating;
+    }
+
+    public static void DeleteAll()
+    {
+      DB.DeleteAll("recipes");
     }
 
     public static List<Recipe> GetAll()
@@ -114,6 +130,41 @@ namespace RecipeApp
       cmd.ExecuteNonQuery();
       DB.CloseSqlConnection(conn);
     }
+
+    public void Update(string newName, string newInstruction, int newRating)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE recipes SET name = @NewName, instruction = @NewInstruction, rating = @NewRating WHERE recipes.id = @TargetId;", conn);
+      cmd.Parameters.Add(new SqlParameter("@NewName", newName));
+      cmd.Parameters.Add(new SqlParameter("@NewInstruction", newInstruction));
+      cmd.Parameters.Add(new SqlParameter("@NewRating", newRating));
+      cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
+      cmd.ExecuteNonQuery();
+
+      this.SetName(newName);
+      this.SetInstruction(newInstruction);
+      this.SetRating(newRating);
+
+      DB.CloseSqlConnection(conn);
+    }
+
+    public void UpdateAmount(Ingredient targetIngredient, string newAmount)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE recipes_ingredients SET amount = @NewAmount WHERE recipe_id = @TargetId AND ingredient_id= @TargetIngredientId; ", conn);
+      cmd.Parameters.Add(new SqlParameter("@NewAmount", newAmount));
+      cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
+      cmd.Parameters.Add(new SqlParameter("@TargetIngredientId", targetIngredient.GetId()));
+      cmd.ExecuteNonQuery();
+
+      targetIngredient.SetAmount(newAmount);
+      DB.CloseSqlConnection(conn);
+    }
+
 
     public static Recipe Find(int id)
     {

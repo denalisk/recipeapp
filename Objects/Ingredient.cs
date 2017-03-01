@@ -21,16 +21,30 @@ namespace RecipeApp
     {
       return _id;
     }
+    public void SetId(int newId)
+    {
+      _id = newId;
+    }
+
 
     public string GetName()
     {
       return _name;
+    }
+    public void SetName(string newName)
+    {
+      _name = newName;
     }
 
     public string GetAmount()
     {
       return _amount;
     }
+    public void SetAmount(string newAmount)
+    {
+      _amount = newAmount;
+    }
+
 
     public static void DeleteAll()
     {
@@ -103,6 +117,19 @@ namespace RecipeApp
       DB.CloseSqlConnection(conn);
     }
 
+    public void Update(string newName)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE ingredients SET name = @NewName WHERE ingredients.id = @TargetId; ", conn);
+      cmd.Parameters.Add(new SqlParameter("@NewName", newName));
+      cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
+      cmd.ExecuteNonQuery();
+
+      this.SetName(newName);
+      DB.CloseSqlConnection(conn);
+    }
 
     public static Ingredient Find(int id)
     {

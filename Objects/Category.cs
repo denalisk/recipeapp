@@ -25,6 +25,11 @@ namespace RecipeApp
       return _name;
     }
 
+    public void SetName(string newName)
+    {
+      _name = newName;
+    }
+
     public static void DeleteAll()
     {
       DB.DeleteAll("categories");
@@ -95,6 +100,19 @@ namespace RecipeApp
       DB.CloseSqlConnection(conn);
     }
 
+    public void Update(string newName)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE categories SET name = @NewName WHERE categories.id = @TargetId;", conn);
+      cmd.Parameters.Add(new SqlParameter("@NewName", newName));
+      cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
+      cmd.ExecuteNonQuery();
+
+      this.SetName(newName);
+      DB.CloseSqlConnection(conn);
+    }
 
     public static Category Find(int id)
     {
