@@ -136,6 +136,18 @@ namespace RecipeApp
       DB.CloseSqlConnection(conn);
     }
 
+    public void DeleteIngredients()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM recipes_ingredients WHERE recipe_id = @TargetId;", conn);
+      cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
+
+      cmd.ExecuteNonQuery();
+      DB.CloseSqlConnection(conn);
+    }
+
     public void Update(string newName, string newInstruction, int newRating)
     {
       SqlConnection conn = DB.Connection();

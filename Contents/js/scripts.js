@@ -12,7 +12,7 @@ var newIngredientDiv = function(targetElement, parentElement) {
 }
 
 $(document).ready(function(){
-  ingredientCounter = 1;
+  ingredientCounter = $("#ingredient-counter").val();
   $("form.entry").submit(function(event){
     // $("input").defaultValue = "";
     $(this).children("input").each(function() {

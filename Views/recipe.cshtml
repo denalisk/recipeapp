@@ -2,8 +2,8 @@
     Layout="Shared/_Layout.cshtml";
 }
 
+<h3>@Model["recipe"].GetName()</h3>
 <div class="recipe-holder">
-  <h3>@Model["recipe"].GetName()</h3>
   <h5>Current rating: @Model["recipe"].GetRating()</h5>
   <div class="add-recipe-categories">
     <form class="" action="/recipes/@Model["recipe"].GetId()/add-category" method="post">
@@ -43,5 +43,41 @@
   <p>
     @Model["recipe"].GetInstruction()
   </p>
-
+</div>
+<div class="recipe-update">
+  <div class="panel panel-success">
+    <div class="panel-heading">Update @Model["recipe"].GetName()</div>
+    <div class="panel-body">
+      <div class="row">
+        <form action="/recipes/@Model["recipe"].GetId()" method="post" id="new-recipe" class="entry">
+          <input type="hidden" name="_method" value="PATCH">
+          <label for="recipe-name">Recipe Name:</label>
+          <input type="text" name="update-recipe-name" id="recipe-name" value="@Model["recipe"].GetName()">
+          <div id="ingredients-div">
+            @for(int index = 1; index <= @Model["recipe"].GetIngredient().Count; index++)
+            {
+              <div id="ingredient-@index">
+                <label class="ingredient-name-label" for="ingredient-@index">New Ingredient</label>
+                <input class="ingredient-name" type="text" name="ingredient-@index" value="@Model["recipe"].GetIngredient()[index-1].GetName()">
+                <label class="ingredient-amount-label" for="ingredient-amount-@index">Ingredient Amount:</label>
+                <input class="ingredient-amount" type="text" name="ingredient-amount-@index" value="@Model["recipe"].GetIngredient()[index-1].GetAmount()">
+              </div>
+            }
+          </div>
+          <button type="button" id="new-ingredient-btn" class="btn">Additional Ingredient</button>
+          <input id="ingredient-counter" type="hidden" name="ingredient-counter" value="@Model["recipe"].GetIngredient().Count"><br>
+          <label for="rating">Rating:</label>
+          <input type="number" name="rating" id="rating" value="@Model["recipe"].GetRating()">
+            <label for="instruction">Instructions:</label>
+            <input type="text" name="instruction" id="instruction" value="@Model["recipe"].GetInstruction()">
+            <button type="submit" class="btn btn-lg btn-info">Update Recipe</button>
+        </form>
+      <hr />
+        <form action="/recipes" method="post">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" name="button" class="btn btn-mgd btn-block btn-danger">Delete All Recipes</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

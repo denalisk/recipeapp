@@ -49,6 +49,23 @@ namespace RecipeApp
         return View["recipes.cshtml", ModelMaker()];
       };
 
+      Patch["/recipes/{id}"] = parameters => {
+        Recipe newRecipe = Recipe.Find(parameters.id);
+        newRecipe.Update(Request.Form["update-recipe-name"], Request.Form["instruction"], Request.Form["rating"]);
+        newRecipe.DeleteIngredients();
+        int ingredientCounter = int.Parse(Request.Form["ingredient-counter"]);
+        for(int index = 1; index <= ingredientCounter; index++)
+        {
+          Ingredient newIngredient = new Ingredient(Request.Form["ingredient-" + index.ToString()]);
+          newIngredient.Save();
+          string newAmount = Request.Form["ingredient-amount-" + index.ToString()];
+          newRecipe.AddIngredient(newIngredient, newAmount);
+        }
+        Dictionary<string, object> model = ModelMaker();
+        model.Add("recipe", newRecipe);
+        return View["recipe.cshtml", model];
+      };
+
       Post["/recipes/{id}/add-category"] = parameters => {
         Recipe foundRecipe = Recipe.Find(parameters.id);
         Category foundCategory = Category.Find(Request.Form["new-category"]);
