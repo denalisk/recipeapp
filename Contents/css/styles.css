@@ -9,9 +9,11 @@ footer.page-footer {
 }
 
 div.invalid-entry {
-  color: red;
+    color: red;
+    margin-top: 5%;
+    display: none;
 }
 
-div.hidden-div {
+/*div.hidden-div {
   display: none;
-}
+}*/

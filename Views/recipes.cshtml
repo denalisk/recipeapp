@@ -3,15 +3,40 @@
 }
 @if (@Model["recipes"].Count == 0)
 {
-  <p>No courses have been added yet!</p>
+  <p>No recipes have been added yet!</p>
 }
 else
 {
   <h1>Here is your list of recipes:</h1>
-  <ul>
+  <ul class="collapsible" data-collapsible+"accordion">
     @foreach (var recipe in @Model["recipes"])
     {
-      <li><a href="/recipes/@recipe.GetId()">@recipe.GetName()</a></li>
+      <li>
+        <div class="collapsible-header">
+        <h4><a href="/recipes/@recipe.GetId()">@recipe.GetName()</a></h4>
+        </div>
+        <div class="collapsible-body">
+          <div class="row">
+            <div class="col s6">
+              <h5>Ingredients</h5>
+              @foreach(var ingredient in @recipe.GetIngredient())
+              {
+                <p>
+                  @ingredient.GetAmount() @ingredient.GetName()
+                </p>
+              }
+            </div>
+            <div class="col s6">
+              <h5>Instructions</h5>
+              @recipe.GetInstruction()
+            </div>
+          </div>
+            <form class="delete-button" action="/recipes/@recipe.GetId()" method="post">
+              <input type="hidden" name="_method" value="DELETE">
+              <button type="submit" name="button">Delete Recipe</button>
+            </form>
+        </div>
+      </li>
     }
   </ul>
 }
@@ -19,7 +44,7 @@ else
   <div class="panel-heading">Add a new recipe</div>
   <div class="panel-body">
     <div class="row">
-      <form action="/recipes" method="post" id="new-recipe">
+      <form action="/recipes" method="post" id="new-recipe" class="entry">
         <label for="recipe-name">Recipe Name:</label>
         <input type="text" name="recipe-name" id="recipe-name">
         <div id="ingredients-div">
@@ -30,15 +55,18 @@ else
             <input class="ingredient-amount" type="text" name="ingredient-amount-1">
           </div>
         </div>
-        <button type="button" id="new-ingredient-btn" name="button">Additional Ingredient</button>
-        <input id="ingredient-counter" type="hidden" name="ingredient-counter" value="1">
+        <button type="button" id="new-ingredient-btn" class="btn">Additional Ingredient</button>
+        <input id="ingredient-counter" type="hidden" name="ingredient-counter" value="1"><br>
         <label for="rating">Rating:</label>
         <input type="number" name="rating" id="rating">
-        <button type="submit" class="btn btn-lg btn-info">Add a new recipe</button>
-        <div class="col s6">
           <label for="instruction">Instructions:</label>
           <input type="text" name="instruction" id="instruction">
-        </div>
+          <button type="submit" class="btn btn-lg btn-info">Add a new recipe</button>
+      </form>
+    <hr />
+      <form action="/recipes" method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit" name="button" class="btn btn-mgd btn-block btn-danger">Delete All Recipes</button>
       </form>
     </div>
   </div>

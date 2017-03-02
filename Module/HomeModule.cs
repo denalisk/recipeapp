@@ -33,10 +33,20 @@ namespace RecipeApp
         return View["recipes.cshtml", ModelMaker()];
       };
 
+      Delete["/recipes"] = _ => {
+        Recipe.DeleteAll();
+        return View["recipes.cshtml", ModelMaker()];
+      };
+
       Get["/recipes/{id}"] = parameters => {
         Dictionary<string, object> model = ModelMaker();
         model.Add("recipe", Recipe.Find(parameters.id));
         return View["recipe.cshtml", model];
+      };
+
+      Delete["/recipes/{id}"] = parameters => {
+        Recipe.Find(parameters.id).Delete();
+        return View["recipes.cshtml", ModelMaker()];
       };
 
       Post["/recipes/{id}/add-category"] = parameters => {
@@ -58,11 +68,27 @@ namespace RecipeApp
         return View["categories.cshtml", ModelMaker()];
       };
 
+      Delete["/categories"] = _ => {
+        Category.DeleteAll();
+        return View["recipes.cshtml", ModelMaker()];
+      };
+
       Get["/categories/{id}"] = parameters => {
         Category foundCategory = Category.Find(parameters.id);
         return View["category.cshtml", foundCategory];
       };
 
+      Patch["/categories/{id}"] = parameters => {
+        Category foundCategory = Category.Find(parameters.id);
+        foundCategory.Update(Request.Form["update-category-name"]);
+        return View["categories.cshtml", ModelMaker()];
+      };
+
+      Delete["/categories/{id}"] = parameters => {
+        Category foundCategory = Category.Find(parameters.id);
+        foundCategory.Delete();
+        return View["categories.cshtml", ModelMaker()];
+      };
 
       Get["/ingredients"] = _ => {
         return View["ingredients.cshtml", ModelMaker()];
@@ -74,10 +100,28 @@ namespace RecipeApp
         return View["ingredients.cshtml", ModelMaker()];
       };
 
+      Delete["/ingredients"] = _ => {
+        Ingredient.DeleteAll();
+        return View["ingredients.cshtml", ModelMaker()];
+      };
+
       Get["/ingredients/{id}"] = parameters => {
         Ingredient foundIngredient = Ingredient.Find(parameters.id);
         return View["ingredient.cshtml", foundIngredient];
       };
+
+      Patch["/ingredients/{id}"] = parameters => {
+        Ingredient foundIngredient = Ingredient.Find(parameters.id);
+        foundIngredient.Update(Request.Form["update-ingredient-name"]);
+        return View["ingredients.cshtml", ModelMaker()];
+      };
+
+      Delete["/ingredients/{id}"] = parameters => {
+        Ingredient foundIngredient = Ingredient.Find(parameters.id);
+        foundIngredient.Delete();
+        return View["ingredients.cshtml", ModelMaker()];
+      };
+
 
 
 

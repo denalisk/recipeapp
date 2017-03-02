@@ -9,20 +9,46 @@
 else
 {
   <h1>Here is your list of categories:</h1>
-  <ul>
+  <ul class="collapsible" data-collapsible="accordion">
     @foreach (var category in @Model["categories"])
     {
-      <li><a href="/categories/@category.GetId()">@category.GetName()</a></li>
+      <li>
+        <div class="collapsible-header">
+          @category.GetName()
+        </div>
+        <div class="collapsible-body">
+          <a href="/categories/@category.GetId()">@category.GetName()</a>
+          <p>
+            Number of associated recipes: @category.GetRecipesByCategory().Count
+            Number of associated ingredients: @category.GetIngredientsByCategory().Count;
+          </p>
+            <form class="delete-button" action="/categories/@category.GetId()" method="post">
+              <input type="hidden" name="_method" value="DELETE">
+              <button type="submit" name="button">Delete Category</button>
+            </form>
+            <form class="update-categories entry" action="/categories/@category.GetId()" method="post">
+              <input type="hidden" name="_method" value="PATCH">
+              <label for="category-name">Category Name:</label>
+              <input type="text" name="update-category-name" id="update-category-name">
+              <button type="submit" name="button">Update Category</button>
+            </form>
+        </div>
+      </li>
     }
   </ul>
 }
 <div class="panel panel-success">
   <div class="panel-heading">Add a new category</div>
   <div class="panel-body">
-    <form action="/categories" method="post" id="new-category">
+    <form action="/categories" method="post" id="new-category"  class="entry">
       <label for="category-name">Category Name:</label>
       <input type="text" name="category-name" id="category-name">
       <button type="submit" class="btn btn-lg btn-info">Add a new category</button>
     </form>
   </div>
 </div>
+
+<form action="/categories" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+  <button type="submit" name="button" class="btn btn-mgd btn-block btn-danger">Delete All Categories</button>
+</form>

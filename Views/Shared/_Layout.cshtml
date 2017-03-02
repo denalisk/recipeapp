@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/css?family=Arapey" rel="stylesheet">
     <link href="/Contents/css/styles.css" rel="stylesheet" type="text/css">
@@ -17,11 +18,13 @@
     </nav>
     <div class="container">
       @RenderBody()
-      <div id="invalid" class="invalid-entry hidden-div">
+      <div class="invalid-entry hidden-div">
+        <div class="card yellow lighten-5">
         <p>
           You must enter valid values for all form fields!
         </p>
       </div>
+    </div>
     </div>
     <footer class="page-footer cyan darken-1">
       <div class="footer-copyright">

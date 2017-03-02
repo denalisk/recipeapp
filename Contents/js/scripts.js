@@ -1,5 +1,4 @@
-var ingredientCounter = 1;
-
+var ingredientCounter;
 var newIngredientDiv = function(targetElement, parentElement) {
   ingredientCounter++;
   $("#ingredient-counter").attr("value", ingredientCounter);
@@ -13,17 +12,26 @@ var newIngredientDiv = function(targetElement, parentElement) {
 }
 
 $(document).ready(function(){
-  $("form").submit(function(event){
-    $("input").each(function() {
+  ingredientCounter = 1;
+  $("form.entry").submit(function(event){
+    // $("input").defaultValue = "";
+    $(this).children("input").each(function() {
       if ($(this).val() === 0 || $(this).val() === "") {
         event.preventDefault();
-        $(this).parent().append($("#invalid").clone().removeClass("hidden-div"));
+        $(".invalid-entry").show();
         return false;
       }
     });
   });
-  $("select").material_select();
   $("#new-ingredient-btn").click(function(){
     newIngredientDiv("#ingredient-1", "#ingredients-div");
   });
+
+  // Materialize Initializations
+  $("select").material_select();
+  $('.collapsible').collapsible();
 })
+
+// if (!($.contains($(this).parent(), ".invalid-entry"))) {
+//   $(this).parent().append($(".invalid-entry").clone().removeClass("hidden"))
+// }

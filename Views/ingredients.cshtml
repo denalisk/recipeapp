@@ -9,20 +9,45 @@
 else
 {
   <h1>Here is your list of ingredients:</h1>
-  <ul>
+  <ul class="collapsible" data-collapsible="accordion">
     @foreach (var ingredient in @Model["ingredients"])
     {
-      <li><a href="/ingredients/@ingredient.GetId()">@ingredient.GetName()</a></li>
+      <li>
+        <div class="collapsible-header">
+          @ingredient.GetName()
+        </div>
+        <div class="collapsible-body">
+          <a href="/ingredients/@ingredient.GetId()">@ingredient.GetName()</a>
+          <p>
+            Number of associated recipes: @ingredient.GetRecipesByIngredient().Count
+          </p>
+            <form class="delete-button" action="/ingredients/@ingredient.GetId()" method="post">
+              <input type="hidden" name="_method" value="DELETE">
+              <button type="submit" name="button">Delete Ingredient</button>
+            </form>
+            <form class="update-ingredients entry" action="/ingredients/@ingredient.GetId()" method="post">
+              <input type="hidden" name="_method" value="PATCH">
+              <label for="ingredient-name">Ingredient Name:</label>
+              <input type="text" name="update-ingredient-name" id="update-ingredient-name">
+              <button type="submit" name="button">Update Ingredient</button>
+            </form>
+        </div>
+      </li>
     }
   </ul>
 }
 <div class="panel panel-success">
   <div class="panel-heading">Add a new ingredient</div>
   <div class="panel-body">
-    <form action="/ingredients" method="post" id="new-ingredient">
+    <form action="/ingredients" method="post" id="new-ingredient" class="entry">
       <label for="ingredient-name">Ingredient Name:</label>
       <input type="text" name="ingredient-name" id="ingredient-name">
       <button type="submit" class="btn btn-lg btn-info">Add a new ingredient</button>
     </form>
   </div>
 </div>
+
+<form action="/ingredients" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+  <button type="submit" name="button" class="btn btn-mgd btn-block btn-danger">Delete All Ingredients</button>
+</form>
