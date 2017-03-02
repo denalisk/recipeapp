@@ -1,0 +1,33 @@
+@{
+    Layout="Shared/_Layout.cshtml";
+}
+@if (@Model["recipes"].Count == 0)
+{
+  <p>No courses have been added yet!</p>
+}
+else
+{
+  <h1>Here is your list of recipes:</h1>
+  <ul>
+    @foreach (var recipe in @Model["recipes"])
+    {
+      <li><a href="/recipes/@recipe.GetId()">@recipe.GetName()</a></li>
+    }
+  </ul>
+}
+<div class="panel panel-success">
+  <div class="panel-heading">Add a new recipe</div>
+  <div class="panel-body">
+    <form action="/recipes" method="post" id="new-recipe">
+      <label for="recipe-name">Recipe Name:</label>
+      <input type="text" name="recipe-name" id="recipe-name">
+
+      <label for="instruction">Instructions:</label>
+      <input type="text" name="instruction" id="instruction">
+
+      <label for="rating">Rating:</label>
+      <input type="number" name="rating" id="rating">
+      <button type="submit" class="btn btn-lg btn-info">Add a new recipe</button>
+    </form>
+  </div>
+</div>

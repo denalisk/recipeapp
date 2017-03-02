@@ -1,0 +1,28 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+
+@if (@Model["categories"].Count == 0)
+{
+  <p>No categories have been added yet!</p>
+}
+else
+{
+  <h1>Here is your list of categories:</h1>
+  <ul>
+    @foreach (var category in @Model["categories"])
+    {
+      <li><a href="/categories/@category.GetId()">@category.GetName()</a></li>
+    }
+  </ul>
+}
+<div class="panel panel-success">
+  <div class="panel-heading">Add a new category</div>
+  <div class="panel-body">
+    <form action="/categories" method="post" id="new-category">
+      <label for="category-name">Category Name:</label>
+      <input type="text" name="category-name" id="category-name">
+      <button type="submit" class="btn btn-lg btn-info">Add a new category</button>
+    </form>
+  </div>
+</div>

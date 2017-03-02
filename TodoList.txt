@@ -1,0 +1,50 @@
+Views
+- Layout:
+    + nav bar: Home, ingredients, recipes, categories
+
+- index:
+    + all ingredients link
+    + all recipes link
+    + all categories link
+    + (your ingredients)
+    + Search ingredients for finding categories and recipes
+    + Search recipes (name)
+    + Search categories (name)
+
+- ingredients:
+    + all ingredients
+    + add new ingredient form
+    + edit button after entry
+    + delete button (when you click)
+- categories:
+    + all ingredients
+    + add new ingredient form
+    + delete button (when you click)
+    + delete All (?)
+- category:
+    + all recipes associated
+    + all ingredients associated
+    + edit button after entry
+    + delete button (when you click)
+    + delete all recipe in this category
+    + delete one recipe in this category
+- recipes:
+    + recipes name
+    + add new recipe form
+    + delete button (when you click)
+    + delete All (?)
+- recipe:
+    + instruction
+    + ingredients
+    + amount
+    + tag: its category
+    + edit button for EACH of those
+    + delete button for ingredients
+    + delete button (when you click)
+
+
+
+ICEBOX:
+- ALL ENCOMPASSING, ALMIGHTY SEARCH ALGORITHM TO PASS THROUGH ALL TABLES
+- SEARCH RECIPE MULTIPLE INGREDIENTS (joint table)
+- ORDER BY rating
