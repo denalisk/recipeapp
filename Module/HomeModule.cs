@@ -39,6 +39,15 @@ namespace RecipeApp
         return View["recipe.cshtml", model];
       };
 
+      Post["/recipes/{id}/add-category"] = parameters => {
+        Recipe foundRecipe = Recipe.Find(parameters.id);
+        Category foundCategory = Category.Find(Request.Form["new-category"]);
+        foundRecipe.AddCategory(foundCategory);
+        Dictionary<string, object> model = ModelMaker();
+        model.Add("recipe", Recipe.Find(parameters.id));
+        return View["recipe.cshtml", model];
+      };
+
       Get["/categories"] = _ => {
         return View["categories.cshtml", ModelMaker()];
       };

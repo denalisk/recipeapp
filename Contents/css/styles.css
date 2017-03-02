@@ -7,3 +7,11 @@ footer {
 footer.page-footer {
     padding-top: 0px;
 }
+
+div.invalid-entry {
+  color: red;
+}
+
+div.hidden-div {
+  display: none;
+}

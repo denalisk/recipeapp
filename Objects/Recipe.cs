@@ -176,8 +176,9 @@ namespace RecipeApp
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT id FROM recipes WHERE name = @RecipeName", conn);
+      SqlCommand cmd = new SqlCommand("SELECT id FROM recipes WHERE name = @RecipeName AND instruction = @RecipeInstruction", conn);
       cmd.Parameters.Add(new SqlParameter("@RecipeName", this.GetName()));
+      cmd.Parameters.Add(new SqlParameter("@RecipeInstruction", this.GetInstruction()));
       SqlDataReader rdr = cmd.ExecuteReader();
 
       int foundId = -1;

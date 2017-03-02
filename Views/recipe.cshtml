@@ -6,7 +6,7 @@
   <h3>@Model["recipe"].GetName()</h3>
   <h5>Current rating: @Model["recipe"].GetRating()</h5>
   <div class="add-recipe-categories">
-    <form class="" action="/recipes/{id}/add-category" method="post">
+    <form class="" action="/recipes/@Model["recipe"].GetId()/add-category" method="post">
         @if (@Model["categories"].Count == 0)
         {
           <select name="new-category">

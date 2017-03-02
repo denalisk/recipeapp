@@ -13,6 +13,15 @@ var newIngredientDiv = function(targetElement, parentElement) {
 }
 
 $(document).ready(function(){
+  $("form").submit(function(event){
+    $("input").each(function() {
+      if ($(this).val() === 0 || $(this).val() === "") {
+        event.preventDefault();
+        $(this).parent().append($("#invalid").clone().removeClass("hidden-div"));
+        return false;
+      }
+    });
+  });
   $("select").material_select();
   $("#new-ingredient-btn").click(function(){
     newIngredientDiv("#ingredient-1", "#ingredients-div");
