@@ -193,6 +193,16 @@ namespace RecipeApp
       Assert.Equal(testIngredient, testCategory.GetIngredientsByCategory()[0]);
     }
 
+    [Fact]
+    public void Category_Save_NoSaveOnDuplicateCategory()
+    {
+      Category testCategory = new Category ("Peasant");
+      testCategory.Save();
+      Category secondCategory = new Category ("Peasant");
+      secondCategory.Save();
+
+      Assert.Equal(1, Category.GetAll().Count);
+    }
 
 
 

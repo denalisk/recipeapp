@@ -1,0 +1,40 @@
+@{
+    Layout="Shared/_Layout.cshtml";
+}
+
+<div class="category-holder">
+  <h3>@Model.GetName()</h3>
+  <ul>@foreach (var category in @Model.GetCategory())
+  {
+    <li><a href="/categories/@category.GetId()">@category.GetName()</a></li>
+    }
+  </ul>
+  <div class="recipe-by-category">
+        @if (@Model.GetRecipesByIngredient().Count == 0)
+        {
+          <h4>There is no recipe associated with this ingredient yet</h4>
+        }
+        else
+        {<ol>
+          @foreach(var recipe in @Model.GetRecipesByIngredient())
+          {
+            <li><a href="/recipes/@recipe.GetId()">@recipe.GetName()</a></li>
+          }
+        </ol>
+        }
+  </div>
+  @* <div class="ingredient-by-category">
+    @if (@Model.GetIngredientsByCategory().Count == 0)
+    {
+      <h4>There is no ingredient associated with this category yet</h4>
+    }
+    else
+    {<ul>
+      @foreach(var ingredient in @Model.GetIngredientsByCategory())
+      {
+        <li><a href="/ingredients/@ingredient.GetId()">@ingredient.GetName()</a></li>
+      }
+    </ul>
+    } *@
+  </div>
+</div>

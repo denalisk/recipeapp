@@ -90,19 +90,24 @@ namespace RecipeApp
 
     public void Save()
     {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-
-      SqlCommand cmd = new SqlCommand("INSERT INTO ingredients (name) OUTPUT INSERTED.id VALUES (@IngredientName);", conn);
-      cmd.Parameters.Add(new SqlParameter("@IngredientName", this.GetName()));
-      SqlDataReader rdr = cmd.ExecuteReader();
-
-      while(rdr.Read())
+      int potentialId = this.IsNewIngredient();
+      if (potentialId == -1)
       {
-        this._id = rdr.GetInt32(0);
-      }
+        SqlConnection conn = DB.Connection();
+        conn.Open();
 
-      DB.CloseSqlConnection(conn, rdr);
+        SqlCommand cmd = new SqlCommand("INSERT INTO ingredients (name) OUTPUT INSERTED.id VALUES (@IngredientName);", conn);
+        cmd.Parameters.Add(new SqlParameter("@IngredientName", this.GetName()));
+        SqlDataReader rdr = cmd.ExecuteReader();
+
+        while(rdr.Read())
+        {
+          potentialId = rdr.GetInt32(0);
+        }
+
+        DB.CloseSqlConnection(conn, rdr);
+      }  
+      this.SetId(potentialId);
     }
 
     public void Delete()
@@ -129,6 +134,26 @@ namespace RecipeApp
 
       this.SetName(newName);
       DB.CloseSqlConnection(conn);
+    }
+
+    public int IsNewIngredient()
+    {
+      // Checks to see if an ingredient exists in the database already. If it does, returns the id. Otherwise, returns -1
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT id FROM ingredients WHERE name = @IngredientName", conn);
+      cmd.Parameters.Add(new SqlParameter("@IngredientName", this.GetName()));
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundId = -1;
+      while (rdr.Read())
+      {
+        foundId = rdr.GetInt32(0);
+      }
+
+      DB.CloseSqlConnection(conn, rdr);
+      return foundId;
     }
 
     public static Ingredient Find(int id)

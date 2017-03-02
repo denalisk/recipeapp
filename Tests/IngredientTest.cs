@@ -177,6 +177,17 @@ namespace RecipeApp
       Assert.Equal(expectedIngredient, Ingredient.Find(testIngredient.GetId()));
     }
 
+    [Fact]
+    public void Ingredient_Save_NoSaveOnDuplicateIngredient()
+    {
+      Ingredient testIngredient = new Ingredient ("Pepper");
+      testIngredient.Save();
+      Ingredient secondIngredient = new Ingredient ("Pepper");
+      secondIngredient.Save();
+
+      Assert.Equal(1, Ingredient.GetAll().Count);
+    }
+
 
 
 

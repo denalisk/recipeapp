@@ -22,19 +22,21 @@ namespace RecipeApp
       Post["/recipes"] = _ => {
         Recipe newRecipe = new Recipe(Request.Form["recipe-name"],Request.Form["instruction"],Request.Form["rating"]);
         newRecipe.Save();
-        int ingredientCounter = Request.Form["ingredient-counter"];
-
-        // BELOW IS INCOMPLETE AND NEEDS LINKING WITH HTML AND JSCRIPT ++++++++++
-        // for(int index = 1; index <= ingredientCounter; index++)
-        // {
-        //   Ingredient newIngredient = new Ingredient(Request.Form["ingredient-" + index.ToString()]);
-        //   newIngredient.Save();
-        //   string newAmount = Request.Form["ingredient-amount-" + index.ToString()];
-        //   newRecipe.AddIngredient(newIngredient, newAmount);
-        // }
-        // ABOVE IS INCOMPLETE AND NEEDS LINKING WITH HTML AND JSCRIPT ++++++++++
-
+        int ingredientCounter = int.Parse(Request.Form["ingredient-counter"]);
+        for(int index = 1; index <= ingredientCounter; index++)
+        {
+          Ingredient newIngredient = new Ingredient(Request.Form["ingredient-" + index.ToString()]);
+          newIngredient.Save();
+          string newAmount = Request.Form["ingredient-amount-" + index.ToString()];
+          newRecipe.AddIngredient(newIngredient, newAmount);
+        }
         return View["recipes.cshtml", ModelMaker()];
+      };
+
+      Get["/recipes/{id}"] = parameters => {
+        Dictionary<string, object> model = ModelMaker();
+        model.Add("recipe", Recipe.Find(parameters.id));
+        return View["recipe.cshtml", model];
       };
 
       Get["/categories"] = _ => {
@@ -47,6 +49,12 @@ namespace RecipeApp
         return View["categories.cshtml", ModelMaker()];
       };
 
+      Get["/categories/{id}"] = parameters => {
+        Category foundCategory = Category.Find(parameters.id);
+        return View["category.cshtml", foundCategory];
+      };
+
+
       Get["/ingredients"] = _ => {
         return View["ingredients.cshtml", ModelMaker()];
       };
@@ -56,6 +64,12 @@ namespace RecipeApp
         newIngredient.Save();
         return View["ingredients.cshtml", ModelMaker()];
       };
+
+      Get["/ingredients/{id}"] = parameters => {
+        Ingredient foundIngredient = Ingredient.Find(parameters.id);
+        return View["ingredient.cshtml", foundIngredient];
+      };
+
 
 
     }

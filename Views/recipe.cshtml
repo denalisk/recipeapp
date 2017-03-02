@@ -1,0 +1,47 @@
+@{
+    Layout="Shared/_Layout.cshtml";
+}
+
+<div class="recipe-holder">
+  <h3>@Model["recipe"].GetName()</h3>
+  <h5>Current rating: @Model["recipe"].GetRating()</h5>
+  <div class="add-recipe-categories">
+    <form class="" action="/recipes/{id}/add-category" method="post">
+        @if (@Model["categories"].Count == 0)
+        {
+          <select name="new-category">
+            <option value="0" disabled selected>There are no categories listed</option>
+            </select>
+        }
+        else
+        {
+          <select name="new-category">
+          <option value="0" disabled selected></option>
+          @foreach(var category in @Model["categories"])
+          {
+            <option value="@category.GetId()">@category.GetName()</option>
+          }
+        </select>
+        }
+      <button type="submit" name="button">Add Category</button>
+    </form>
+  </div>
+  <div class="recipe-categories">
+    <p>
+      @foreach(var category in @Model["recipe"].GetCategory())
+      {
+        @category.GetName()
+      }
+    </p>
+  </div>
+  <ul>
+    @foreach(var ingredient in @Model["recipe"].GetIngredient())
+    {
+      <li>@ingredient.GetAmount()  @ingredient.GetName() </li>
+    }
+  </ul>
+  <p>
+    @Model["recipe"].GetInstruction()
+  </p>
+
+</div>

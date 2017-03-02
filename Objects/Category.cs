@@ -19,6 +19,10 @@ namespace RecipeApp
     {
       return _id;
     }
+    public void SetId(int newId)
+    {
+      _id = newId;
+    }
 
     public string GetName()
     {
@@ -73,6 +77,9 @@ namespace RecipeApp
 
     public void Save()
     {
+      int potentialId = this.IsNewCategory();
+      if (potentialId == -1)
+      {
       SqlConnection conn = DB.Connection();
       conn.Open();
 
@@ -82,10 +89,12 @@ namespace RecipeApp
 
       while(rdr.Read())
       {
-        this._id = rdr.GetInt32(0);
+        potentialId = rdr.GetInt32(0);
       }
 
       DB.CloseSqlConnection(conn, rdr);
+      }
+      this.SetId(potentialId);
     }
 
     public void Delete()
@@ -112,6 +121,26 @@ namespace RecipeApp
 
       this.SetName(newName);
       DB.CloseSqlConnection(conn);
+    }
+
+    public int IsNewCategory()
+    {
+      // Checks to see if an ingredient exists in the database already. If it does, returns the id. Otherwise, returns -1
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT id FROM categories WHERE name = @CategoryName", conn);
+      cmd.Parameters.Add(new SqlParameter("@CategoryName", this.GetName()));
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundId = -1;
+      while (rdr.Read())
+      {
+        foundId = rdr.GetInt32(0);
+      }
+
+      DB.CloseSqlConnection(conn, rdr);
+      return foundId;
     }
 
     public static Category Find(int id)

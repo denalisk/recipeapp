@@ -102,6 +102,9 @@ namespace RecipeApp
 
     public void Save()
     {
+      int potentialId = this.IsNewRecipe();
+      if (potentialId == -1)
+      {
       SqlConnection conn = DB.Connection();
       conn.Open();
 
@@ -113,10 +116,12 @@ namespace RecipeApp
 
       while(rdr.Read())
       {
-        this._id = rdr.GetInt32(0);
+        potentialId = rdr.GetInt32(0);
       }
 
       DB.CloseSqlConnection(conn, rdr);
+      }
+      this.SetId(potentialId);
     }
 
     public void Delete()
@@ -165,6 +170,25 @@ namespace RecipeApp
       DB.CloseSqlConnection(conn);
     }
 
+    public int IsNewRecipe()
+    {
+      // Checks to see if an ingredient exists in the database already. If it does, returns the id. Otherwise, returns -1
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT id FROM recipes WHERE name = @RecipeName", conn);
+      cmd.Parameters.Add(new SqlParameter("@RecipeName", this.GetName()));
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundId = -1;
+      while (rdr.Read())
+      {
+        foundId = rdr.GetInt32(0);
+      }
+
+      DB.CloseSqlConnection(conn, rdr);
+      return foundId;
+    }
 
     public static Recipe Find(int id)
     {

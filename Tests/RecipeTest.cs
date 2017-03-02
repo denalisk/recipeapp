@@ -199,6 +199,17 @@ namespace RecipeApp
       Assert.Equal(verify, output);
     }
 
+    [Fact]
+    public void Recipe_Save_NoSaveOnDuplicateRecipe()
+    {
+      Recipe testRecipe = new Recipe ("Pot Pie", "Microwave it");
+      testRecipe.Save();
+      Recipe secondRecipe = new Recipe ("Pot Pie", "Microwave it");
+      secondRecipe.Save();
+
+      Assert.Equal(1, Recipe.GetAll().Count);
+    }
+
 
 
 
