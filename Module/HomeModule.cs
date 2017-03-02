@@ -22,6 +22,18 @@ namespace RecipeApp
       Post["/recipes"] = _ => {
         Recipe newRecipe = new Recipe(Request.Form["recipe-name"],Request.Form["instruction"],Request.Form["rating"]);
         newRecipe.Save();
+        int ingredientCounter = Request.Form["ingredient-counter"];
+
+        // BELOW IS INCOMPLETE AND NEEDS LINKING WITH HTML AND JSCRIPT ++++++++++
+        // for(int index = 1; index <= ingredientCounter; index++)
+        // {
+        //   Ingredient newIngredient = new Ingredient(Request.Form["ingredient-" + index.ToString()]);
+        //   newIngredient.Save();
+        //   string newAmount = Request.Form["ingredient-amount-" + index.ToString()];
+        //   newRecipe.AddIngredient(newIngredient, newAmount);
+        // }
+        // ABOVE IS INCOMPLETE AND NEEDS LINKING WITH HTML AND JSCRIPT ++++++++++
+
         return View["recipes.cshtml", ModelMaker()];
       };
 

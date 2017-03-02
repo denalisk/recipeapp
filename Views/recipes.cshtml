@@ -18,16 +18,28 @@ else
 <div class="panel panel-success">
   <div class="panel-heading">Add a new recipe</div>
   <div class="panel-body">
-    <form action="/recipes" method="post" id="new-recipe">
-      <label for="recipe-name">Recipe Name:</label>
-      <input type="text" name="recipe-name" id="recipe-name">
-
-      <label for="instruction">Instructions:</label>
-      <input type="text" name="instruction" id="instruction">
-
-      <label for="rating">Rating:</label>
-      <input type="number" name="rating" id="rating">
-      <button type="submit" class="btn btn-lg btn-info">Add a new recipe</button>
-    </form>
+    <div class="row">
+      <form action="/recipes" method="post" id="new-recipe">
+        <label for="recipe-name">Recipe Name:</label>
+        <input type="text" name="recipe-name" id="recipe-name">
+        <div id="ingredients-div">
+          <div id="ingredient-1">
+            <label for="ingredient-name">New Ingredient</label>
+            <input type="text" name="ingredient-1">
+            <label for="recipe-name">Ingredient Amount:</label>
+            <input type="text" name="ingredient-amount-1">
+          </div>
+          <button type="button" id="new-ingredient-btn" name="button">Additional Ingredient</button>
+        </div>
+        <input id="ingredient-counter" type="hidden" name="" value="1">
+        <label for="rating">Rating:</label>
+        <input type="number" name="rating" id="rating">
+        <button type="submit" class="btn btn-lg btn-info">Add a new recipe</button>
+        <div class="col s6">
+          <label for="instruction">Instructions:</label>
+          <input type="text" name="instruction" id="instruction">
+        </div>
+      </form>
+    </div>
   </div>
 </div>
