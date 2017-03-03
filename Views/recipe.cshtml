@@ -23,7 +23,7 @@
           }
         </select>
         }
-      <button type="submit" name="button">Add Category</button>
+      <button type="submit" class="waves-effect waves-light btn-large">Add Category</button>
     </form>
   </div>
   <div class="recipe-categories">
@@ -66,7 +66,7 @@
           </div>
           <button type="button" id="new-ingredient-btn" class="btn">Additional Ingredient</button>
           <input id="ingredient-counter" type="hidden" name="ingredient-counter" value="@Model["recipe"].GetIngredient().Count"><br>
-          <label for="rating">Rating:</label>
+          <label for="rating">Rating:</label><br>
           <fieldset class="rating">
             <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
             <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
@@ -75,7 +75,7 @@
             <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
           </fieldset>
           <input type="hidden" name="old-rating" id="old-rating" value="@Model["recipe"].GetRating()">
-            <label for="instruction">Instructions:</label>
+            <br><br><label for="instruction">Instructions:</label>
             <input type="text" name="instruction" id="instruction" value="@Model["recipe"].GetInstruction()">
             <button type="submit" class="btn btn-lg btn-info">Update Recipe</button>
         </form>
@@ -84,6 +84,7 @@
         <input type="hidden" name="_method" value="DELETE">
         <button type="submit" class="btn btn-lg btn-primary">Delete this recipe</button>
       </form>
+        <hr />
         <form action="/recipes" method="post">
           <input type="hidden" name="_method" value="DELETE">
           <button type="submit" name="button" class="btn btn-mgd btn-block btn-danger">Delete All Recipes</button>

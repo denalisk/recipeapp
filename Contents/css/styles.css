@@ -17,3 +17,23 @@ div.invalid-entry {
 /*div.hidden-div {
   display: none;
 }*/
+
+[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: none;
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+     background-color: none;
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+     border: none;
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: none;
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: none;
+}
