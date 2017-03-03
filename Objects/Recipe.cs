@@ -156,7 +156,7 @@ namespace RecipeApp
       SqlCommand cmd = new SqlCommand("UPDATE recipes SET name = @NewName, instruction = @NewInstruction, rating = @NewRating WHERE recipes.id = @TargetId;", conn);
       cmd.Parameters.Add(new SqlParameter("@NewName", newName));
       cmd.Parameters.Add(new SqlParameter("@NewInstruction", newInstruction));
-      cmd.Parameters.Add(new SqlParameter("@NewRating", newRating));
+      cmd.Parameters.Add(new SqlParameter("@NewRating", newRating.ToString()));
       cmd.Parameters.Add(new SqlParameter("@TargetId", this.GetId()));
       cmd.ExecuteNonQuery();
 

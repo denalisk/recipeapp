@@ -20,7 +20,7 @@ namespace RecipeApp
       };
 
       Post["/recipes"] = _ => {
-        Recipe newRecipe = new Recipe(Request.Form["recipe-name"],Request.Form["instruction"],Request.Form["rating"]);
+        Recipe newRecipe = new Recipe(Request.Form["recipe-name"],Request.Form["instruction"],int.Parse(Request.Form["rating"]));
         newRecipe.Save();
         int ingredientCounter = int.Parse(Request.Form["ingredient-counter"]);
         for(int index = 1; index <= ingredientCounter; index++)
@@ -65,6 +65,7 @@ namespace RecipeApp
         model.Add("recipe", newRecipe);
         return View["recipe.cshtml", model];
       };
+
 
       Post["/recipes/{id}/add-category"] = parameters => {
         Recipe foundRecipe = Recipe.Find(parameters.id);

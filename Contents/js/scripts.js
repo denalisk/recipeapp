@@ -26,7 +26,10 @@ $(document).ready(function(){
   $("#new-ingredient-btn").click(function(){
     newIngredientDiv("#ingredient-1", "#ingredients-div");
   });
-
+  if ($("body").has(".rating").length === 1) {
+    var oldRating = "#star" + $("#old-rating").val().toString();
+    $(oldRating).attr("checked", true);
+  }
   // Materialize Initializations
   $("select").material_select();
   $('.collapsible').collapsible();
